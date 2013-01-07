@@ -1,0 +1,31 @@
+{
+  "name": "coffee-eveapi",
+  "version": "0.1.0",
+  "description": "CoffeScript class for Eve Online API requests",
+  "scripts": {
+    "test": "mocha --compilers coffee:coffee-script --require should"
+  },
+  "main": "./lib/eveapi",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xenolf/coffee-eveapi.git"
+  },
+  "keywords": [
+    "eve",
+    "online",
+    "api"
+  ],
+  "author": "xenolf",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "directories": {"lib": "./lib"},
+  "dependencies": {
+    "sax": "~0.4.3",
+    "moment": "~1.7.2",
+    "mongodb": "~1.2.7"
+    },
+    "devDependencies": {
+      "mocha": "~1.7.4",
+      "should": "~1.2.1"
+    }
+}
