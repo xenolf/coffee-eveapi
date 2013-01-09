@@ -1,6 +1,6 @@
 {
   "name": "coffee-eveapi",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CoffeScript class for Eve Online API requests",
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script --require should"
