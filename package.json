@@ -18,14 +18,16 @@
   "author": "xenolf",
   "license": "MIT",
   "readmeFilename": "README.md",
-  "directories": {"lib": "./lib"},
+  "directories": {
+    "lib": "./lib"
+  },
   "dependencies": {
     "sax": "~0.4.3",
     "moment": "~1.7.2",
-    "mongodb": "~1.2.7"
-    },
-    "devDependencies": {
-      "mocha": "~1.7.4",
-      "should": "~1.2.1"
-    }
+    "underscore": "~1.4.3"
+  },
+  "devDependencies": {
+    "mocha": "~1.7.4",
+    "should": "~1.2.1"
+  }
 }
