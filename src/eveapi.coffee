@@ -19,6 +19,9 @@ class EveApi
                    Must extend BaseCacheProvider.
   ###
   constructor: (@server = 'api.eveonline.com', @cacheProvider = new BaseCacheProvider) ->
+    if @server is ''
+      @server = 'api.eveonline.com'
+
     if @cacheProvider not instanceof BaseCacheProvider
       throw new Error 'Providers must extend BaseCacheProvider!'
 
@@ -40,8 +43,13 @@ class EveApi
     if not callback?
       throw new Error 'Must provide a callback!'
 
+    if not options
+      callback 'Must provide an options object!', null
+      return
+
     if not options.scope? or not options.api?
-      throw new Error 'Must provide scope and api in the options object!'
+      callback 'Must provide scope and api in the options object!', null
+      return
 
     # construct url
     url = "/#{options.scope}/#{options.api}.xml.aspx"
@@ -92,6 +100,10 @@ class EveApi
     xmlString: the xml
   ###
   parseXML: (xmlString, callback) ->
+    if not xmlString or xmlString is ''
+      callback 'XML cannot be empty!', null
+      return
+
     parser = sax.parser false,
       trim: true
       normalize: true
@@ -102,7 +114,8 @@ class EveApi
     nodeRef = jsonObj
 
     parser.onerror = (err) ->
-      console.print err
+      console.log err
+      callback err, null
 
     parser.ontext = (text) ->
       nodeRef[currentNode] = text
