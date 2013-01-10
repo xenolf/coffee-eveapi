@@ -22,7 +22,7 @@
     "lib": "./lib"
   },
   "dependencies": {
-    "sax": "~0.4.3",
+    "sax": "~0.5.1",
     "moment": "~1.7.2",
     "underscore": "~1.4.3"
   },
