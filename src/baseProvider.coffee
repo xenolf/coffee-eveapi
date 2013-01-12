@@ -16,7 +16,7 @@ class BaseCacheProvider
         delete @cacheObject[index]
         return null
       else
-        return @cacheObject[index]
+        return @cacheObject[index].value
 
     else
       return null
