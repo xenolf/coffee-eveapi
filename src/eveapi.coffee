@@ -83,7 +83,7 @@ class EveApi
 
       res.on 'end', () =>
         @parseXML response, (error, obj) =>
-          @cacheProvider.set url + postData, obj, obj.cachedUntil
+          @cacheProvider.set url + postData, obj, obj.cacheduntil
           callback null, obj
           return
 
