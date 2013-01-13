@@ -6,7 +6,7 @@ init:
 	npm install
 
 clean:
-	rm -rf lib/
+	rm -rf lib/ && rm static/evedump.db
 
 build: deps
 	coffee -o lib/ -c src/

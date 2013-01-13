@@ -27,7 +27,8 @@
   "dependencies": {
     "sax": "~0.5.1",
     "moment": "~1.7.2",
-    "underscore": "~1.4.3"
+    "underscore": "~1.4.3",
+    "sqlite3": "~2.1.5"
   },
   "devDependencies": {
     "mocha": "~1.7.4",
