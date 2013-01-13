@@ -1,6 +1,5 @@
 querystring = require 'querystring'
 https = require 'https'
-BaseCacheProvider = require './baseProvider'
 sax = require 'sax'
 _ = require 'underscore'
 
@@ -9,7 +8,7 @@ _ = require 'underscore'
   EvEApi request class
   Always uses SSL to make requests. No support for EvEApi Proxy or other shit.
 ###
-class EveApi
+exports.api = class EveApi
   ###
   Constructor
 
@@ -174,5 +173,3 @@ class EveApi
 
     parser.write xmlString
     parser.close()
-
-module.exports = EveApi

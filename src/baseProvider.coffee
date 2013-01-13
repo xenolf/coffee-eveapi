@@ -5,7 +5,7 @@ moment = require 'moment'
 
   Provides an in-memory cache object.
 ###
-class BaseCacheProvider
+exports.baseCacheProvider = class BaseCacheProvider
   constructor: () ->
     @cacheObject = {}
 
@@ -28,6 +28,3 @@ class BaseCacheProvider
       cachedUntil: expires
 
     @cacheObject[key] = toCache
-
-
-module.exports = BaseCacheProvider

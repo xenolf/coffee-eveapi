@@ -13,7 +13,8 @@ make build
 Usage is pretty straightforward.
 ```coffe-script
 # require the module
-eveapi = require 'coffee-eveapi'
+eveapi = (require 'coffee-eveapi').api
+evestatic = (require 'coffee-eveapi').staticData
 
 # create a api instance
 api = new eveapi
@@ -23,6 +24,7 @@ api = new eveapi
 # 'scope': the scope of the api call (eg. 'account' or 'character')
 # 'api': the api to call. Its the url without xml.aspx
 api.call options, (error, result) ->
+  foo()
 ```
 
 # License

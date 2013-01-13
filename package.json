@@ -5,9 +5,9 @@
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script --require should"
   },
-  "main": "./lib/eveapi.js",
+  "main": "./lib/index.js",
   "bin": {
-    "eveapi": "./lib/eveapi.js"
+    "eveapi": "./lib/index.js"
   },
   "repository": {
     "type": "git",

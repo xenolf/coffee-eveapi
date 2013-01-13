@@ -9,7 +9,7 @@ clean:
 	rm -rf lib/ && rm static/evedump.db
 
 build: deps
-	coffee -o lib/ -c src/
+	coffee -j index.js -o lib/ -c src/
 
 test: deps
 	mocha --compilers coffee:coffee-script --require should
