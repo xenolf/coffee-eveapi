@@ -1,4 +1,4 @@
-EvEStatic = require '../src/eveStatic'
+EvEStatic = (require '../lib/index').EvEStatic
 fs = require 'fs'
 should = require 'should'
 

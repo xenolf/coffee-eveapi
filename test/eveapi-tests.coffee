@@ -1,5 +1,5 @@
-EveApi = require '../src/eveapi'
-BaseCacheProvider = require '../src/baseProvider'
+EveApi = (require '../lib/index').EvEApi
+BaseCacheProvider = (require '../lib/index').BaseCacheProvider
 fs = require 'fs'
 should = require 'should'
 

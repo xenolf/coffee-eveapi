@@ -6,7 +6,7 @@ sqlite3 = require('sqlite3').verbose()
 ###
 Class for looking up static eve data in a sqlite3 db
 ###
-exports.staticData = class EveStatic
+exports.EvEStatic = class EveStatic
 
   constructor: ->
     @initialized = false

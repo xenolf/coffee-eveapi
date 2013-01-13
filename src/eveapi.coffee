@@ -8,7 +8,7 @@ _ = require 'underscore'
   EvEApi request class
   Always uses SSL to make requests. No support for EvEApi Proxy or other shit.
 ###
-exports.api = class EveApi
+exports.EvEApi = class EveApi
   ###
   Constructor
 
