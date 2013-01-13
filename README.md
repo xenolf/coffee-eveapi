@@ -6,7 +6,7 @@ CoffeScript class for Eve Online API requests
 # Compiling
 To compile the coffee-script into JS just run
 ```bash
-make generate-js
+make build
 ```
 
 # Usage
