@@ -13,8 +13,8 @@ make build
 Usage is pretty straightforward.
 ```coffe-script
 # require the module
-eveapi = (require 'coffee-eveapi').api
-evestatic = (require 'coffee-eveapi').staticData
+eveapi = (require 'coffee-eveapi').EvEApi
+evestatic = (require 'coffee-eveapi').EvEStatic
 
 # create a api instance
 api = new eveapi
