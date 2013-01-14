@@ -11,7 +11,7 @@ exports.EvEStatic = class EveStatic
   constructor: ->
     @initialized = false
     @dbFile = "#{__dirname}/../static/evedump.db"
-    
+
   init: (callback) ->
     # if the database file does not yet exist.
     # extract it from the distributed .gz file.
@@ -34,17 +34,42 @@ exports.EvEStatic = class EveStatic
         @db = new sqlite3.Database @dbFile
         callback()
 
+  ###
+  Looks up an array of names and returns an object with name : id
+  ###
+  find: (nameArr, callback) ->
+    if not callback?
+      throw new Error 'Must be called with a callback!'
 
+    if not nameArr? or nameArr.length is 0
+      callback new Error 'Pass a valid item name!', null
+      return
+
+    if not @initialized
+      callback new Error 'Must call init() first!', null
+      return
+
+    inStr = ''
+    inStr += '?,' for num in [0 ... nameArr.length]
+    inStr = inStr.slice 0, -1
+
+    @db.all "SELECT typeName, typeID FROM invTypes WHERE typeName IN (#{inStr})", nameArr, (err, rows) ->
+      if err
+        callback err, null
+        return
+
+      callback null, rows
 
   ###
   Looks for the supplied name in the db and returns the typeID
   ###
-  lookup: (name, callback) ->
+  findOne: (name, callback) ->
     if not callback?
       throw new Error 'Must be called with a callback!'
 
     if not name? or name.length is 0
       callback new Error 'Pass a valid item name!', null
+      return
 
     if not @initialized
       callback new Error 'Must call init() first!', null
@@ -53,5 +78,6 @@ exports.EvEStatic = class EveStatic
     @db.get "SELECT typeID FROM invTypes WHERE typeName = '#{name}'", (err, row) ->
       if err
         callback err, null
+        return
 
       callback null, row
