@@ -18,7 +18,7 @@ deps:
 	@test `which coffee` || echo 'You need to have CoffeeScript in your PATH.\nPlease install it using `brew install coffee-script` or `npm install coffee-script`.'
 	@test `which mocha` || echo 'You need to have mocha installed to run tests!'
 
-dist: init build test
+dist: init test build
 
 publish: dist
 	npm publish
