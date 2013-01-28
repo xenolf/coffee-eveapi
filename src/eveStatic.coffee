@@ -35,7 +35,7 @@ exports.EvEStatic = class EveStatic
         callback()
 
   ###
-  Looks up an array of names and returns an object with name : id
+  Looks up an array of names and returns an object with name : id : slot (if applicable)
   ###
   find: (nameArr, callback) ->
     if not callback?
@@ -53,7 +53,7 @@ exports.EvEStatic = class EveStatic
     inStr += '?,' for num in [0 ... nameArr.length]
     inStr = inStr.slice 0, -1
 
-    @db.all "SELECT typeName, typeID FROM invTypes WHERE typeName IN (#{inStr})", nameArr, (err, rows) ->
+    @db.all "SELECT i.typeName, i.typeID, e.effectID FROM invTypes as i LEFT JOIN dgmTypeEffects e ON i.typeID = e.typeID AND e.effectID IN (11,12,13,2663) WHERE i.typeName IN (#{inStr})", nameArr, (err, rows) ->
       if err
         callback err, null
         return
@@ -75,7 +75,7 @@ exports.EvEStatic = class EveStatic
       callback new Error 'Must call init() first!', null
       return
 
-    @db.get "SELECT typeID FROM invTypes WHERE typeName = '#{name}'", (err, row) ->
+    @db.get "SELECT i.typeName, i.typeID , e.effectID FROM invTypes as i LEFT JOIN dgmTypeEffects as e ON i.typeID = e.typeID AND e.effectID IN (11,12,13,2663) WHERE typeName = '#{name}'", (err, row) ->
       if err
         callback err, null
         return
