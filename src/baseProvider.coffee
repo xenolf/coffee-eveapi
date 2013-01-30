@@ -25,6 +25,6 @@ exports.BaseCacheProvider = class BaseCacheProvider
 
     toCache =
       value: value
-      cachedUntil: expires
+      cachedUntil: moment().add('seconds', expires)
 
     @cacheObject[key] = toCache

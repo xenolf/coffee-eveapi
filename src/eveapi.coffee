@@ -80,9 +80,10 @@ exports.EvEApi = class EveApi
       res.on 'data', (data) ->
         response += data
 
-      res.on 'end', () =>
+      res.on 'end', =>
         @parseXML response, (error, obj) =>
-          @cacheProvider.set url + postData, obj, obj.cacheduntil
+          cachedUntil = moment(obj.currenttime, 'YYYY-MM-DD HH:mm:ss').diff(moment(obj.cacheduntil, 'YYYY-MM-DD HH:mm:ss'), 'seconds')
+          @cacheProvider.set url + postData, obj, cachedUntil
           callback null, obj
           return
 
