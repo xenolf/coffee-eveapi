@@ -139,28 +139,19 @@ exports.EvEApi = class EveApi
         if node.name is 'rowset'
           nodeRef['rows'] = []
 
+      else
+        index = nodeRef['rows'].push {parent: nodeRef}
+        nodeRef = nodeRef['rows'][index - 1]
+
       # stupid saxjs, attributes object exists even if there are no attributes
       if node.attributes and _.size(node.attributes) > 0
-
-        # rowobj is needed for row array population
-        rowObj = {}
 
         # loop through all attributes and add them as properties to the current node object
         # if the current object is a row node, just construct a object of all attribs to add to the array.
         for attribName, attribValue of node.attributes
-          if node.name isnt 'row'
-            nodeRef[attribName] = attribValue
-          else
-            rowObj[attribName] = attribValue
-
-        if node.name is 'row'
-          nodeRef['rows'].push rowObj
+          nodeRef[attribName] = attribValue
 
     parser.onclosetag = (node) ->
-      # should not step back in the hierarchy on a row node. (row nodes are arrays)
-      if node is 'row'
-        return
-
       # concenate objects
       if _.size(nodeRef) is 2 and nodeRef[node]
         nodeRef.parent[node] = nodeRef[node]
