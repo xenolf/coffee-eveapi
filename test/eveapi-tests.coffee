@@ -2,6 +2,7 @@ EveApi = (require '../lib/index').EvEApi
 BaseCacheProvider = (require '../lib/index').BaseCacheProvider
 fs = require 'fs'
 should = require 'should'
+_ = require 'underscore'
 
 describe 'EveApi', ->
 
@@ -65,6 +66,12 @@ describe 'EveApi', ->
 				should.not.exist data
 				should.exist error
 				error.should.eql 'Must provide an options object!'
+				done()
+
+		it 'should cache the result of the call', (done) ->
+			eve = new EveApi
+			eve.call {scope: 'api', api: 'calllist'}, (error, data) ->
+				_.size(eve.cacheProvider.cacheObject).should.eql 1
 				done()
 
   describe 'parseXML', ->

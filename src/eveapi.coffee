@@ -57,41 +57,40 @@ exports.EvEApi = class EveApi
     postData = querystring.stringify options
 
     # check the cache
-    cachedResult = @cacheProvider.get url + postData
+    @cacheProvider.get url + postData, (err, data) =>
 
-    if cachedResult?
-      callback null, cachedResult
-      return
+      if data?
+        callback null, data
+        return
 
-    # no cache hit, execute a http/s request
-    options =
-      hostname: @server
-      port: 443
-      path: url
-      method: 'POST'
-      headers:
-        'Content-Type': 'application/x-www-form-urlencoded'
-        'Content-Length': postData.length
+      # no cache hit, execute a http/s request
+      options =
+        hostname: @server
+        port: 443
+        path: url
+        method: 'POST'
+        headers:
+          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Length': postData.length
 
-    response = ""
-    req = https.request options, (res) =>
-      console.log res.statusCode
+      response = ""
+      req = https.request options, (res) =>
 
-      res.on 'data', (data) ->
-        response += data
+        res.on 'data', (data) ->
+          response += data
 
-      res.on 'end', =>
-        @parseXML response, (error, obj) =>
-          cachedUntil = moment(obj.currenttime, 'YYYY-MM-DD HH:mm:ss').diff(moment(obj.cacheduntil, 'YYYY-MM-DD HH:mm:ss'), 'seconds')
-          @cacheProvider.set url + postData, obj, cachedUntil
-          callback null, obj
-          return
+        res.on 'end', =>
+          @parseXML response, (error, obj) =>
+            cachedUntil = moment(obj.currenttime, 'YYYY-MM-DD HH:mm:ss').diff(moment(obj.cacheduntil, 'YYYY-MM-DD HH:mm:ss'), 'seconds')
+            @cacheProvider.set url + postData, obj, cachedUntil
+            callback null, obj
+            return
 
-    req.on 'error', (error) ->
-      callback error, null
+      req.on 'error', (error) ->
+        callback error, null
 
-    req.write postData
-    req.end()
+      req.write postData
+      req.end()
 
   ###
   Takes in an XML string and tries to parse it into a JSON object.

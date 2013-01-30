@@ -9,22 +9,22 @@ exports.BaseCacheProvider = class BaseCacheProvider
   constructor: () ->
     @cacheObject = {}
 
-  get: (index) ->
+  get: (index, callback) ->
     if @cacheObject[index]?
 
-      if moment(@cacheObject[index].cachedUntil) <= moment()
+      if moment(@cacheObject[index].cachedUntil, 'YYYY-MM-DD HH:mm:ss') <= moment()
         delete @cacheObject[index]
-        return null
+        callback 'Not found', null
       else
-        return @cacheObject[index].value
+        callback null, @cacheObject[index].value
 
     else
-      return null
+      callback 'Not found', null
 
   set: (key, value, expires) ->
 
     toCache =
       value: value
-      cachedUntil: moment().add('seconds', expires)
+      cachedUntil: moment().add('seconds', expires).format('YYYY-MM-DD HH:mm:ss')
 
     @cacheObject[key] = toCache
