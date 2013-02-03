@@ -12,7 +12,7 @@ build: deps clean
 	coffee -j index.js -o lib/ -c src/
 
 test: build
-	mocha --compilers coffee:coffee-script --require should
+	mocha -t 4000 --compilers coffee:coffee-script --require should
 
 deps:
 	@test `which coffee` || echo 'You need to have CoffeeScript in your PATH.\nPlease install it using `brew install coffee-script` or `npm install coffee-script`.'
