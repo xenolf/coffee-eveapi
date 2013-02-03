@@ -85,3 +85,55 @@ exports.EvEStatic = class EveStatic
         return
 
       callback null, row
+
+  findSolarSystems: (systemArr, callback) ->
+    if not callback?
+      throw new Error 'Must be called with a callback!'
+
+    if not systemArr? or systemArr.length is 0
+      callback new Error 'Pass a valid system name or id!', null
+      return
+
+    if not @initialized
+      callback new Error 'Must call init() first!', null
+      return
+
+    inStr = ''
+    inStr += '?,' for num in [0 ... systemArr.length]
+    inStr = inStr.slice 0, -1
+
+    whereSwitch = if _.isNaN(parseInt systemArr[0]) then 'solarSystemName' else 'solarSystemID'
+
+    @db.all "SELECT solarSystemName, solarSystemID FROM mapSolarSystems WHERE #{whereSwitch} IN (#{inStr})", systemArr, (err, rows) ->
+      if err
+        callback err, null
+        return
+
+      callback null, rows  
+    
+    
+
+  findSolarSystem: (name, callback) ->
+    if not callback?
+      throw new Error 'Must be called with a callback!'
+
+    if not name? or name.length is 0
+      callback new Error 'Pass a valid system name or id!', null
+      return
+
+    if not @initialized
+      callback new Error 'Must call init() first!', null
+      return
+
+    whereSwitch = if _.isNaN(parseInt name) then 'solarSystemName' else 'solarSystemID'
+
+    @db.get "SELECT solarSystemName, solarSystemID FROM mapSolarSystems WHERE #{whereSwitch} = '#{name}'", (err, row) ->
+      if err
+        callback err, null
+        return
+
+      callback null, row
+    
+    
+  
+  
