@@ -23,10 +23,10 @@ describe 'EvEStatic', ->
         should.not.exist error
         done()
 
-  describe 'findOne', ->
+  describe 'findItem', ->
     it 'should return an error callback if called before init', (done) ->
       stat = new EvEStatic
-      stat.findOne 'test', (error, data) ->
+      stat.findItem 'test', (error, data) ->
         should.exist error
         should.not.exist data
         error.message.should.eql 'Must call init() first!'
@@ -37,7 +37,7 @@ describe 'EvEStatic', ->
       stat.init (error) ->
         should.not.exist error
 
-        stat.findOne '', (error, result) ->
+        stat.findItem '', (error, result) ->
           should.exist error
           error.message.should.eql 'Pass a valid item name!'
           should.not.exist result
@@ -48,7 +48,7 @@ describe 'EvEStatic', ->
       stat.init (error) ->
         should.not.exist error
         (->
-          stat.findOne 'Tyrfing'
+          stat.findItem 'Tyrfing'
         ).should.throw 'Must be called with a callback!'
         done()
 
@@ -57,18 +57,33 @@ describe 'EvEStatic', ->
       stat.init (error) ->
         should.not.exist error
 
-        stat.findOne 'Tyrfing', (error, result) ->
+        stat.findItem 'Tyrfing', (error, result) ->
           should.not.exist error
           should.exist result
           result.typeID.should.eql 32342
           should.not.exist result.effectID
           done()
 
-  describe 'find', ->
+    it 'should also work with IDs', (done) ->
+      stat = new EvEStatic
+      stat.init (error) ->
+        should.not.exist error
+
+        stat.findItem '32342', (error, result) ->
+          should.not.exist error
+          should.exist result
+          result.typeID.should.eql 32342
+          result.typeName.should.eql 'Tyrfing'
+          should.not.exist result.effectID
+          done()
+    
+    
+
+  describe 'findItems', ->
 
     it 'should return an error callback if called before init', (done) ->
       stat = new EvEStatic
-      stat.findOne 'test', (error, data) ->
+      stat.findItems 'test', (error, data) ->
         should.exist error
         should.not.exist data
         error.message.should.eql 'Must call init() first!'
@@ -79,7 +94,7 @@ describe 'EvEStatic', ->
       stat.init (error) ->
         should.not.exist error
 
-        stat.findOne '', (error, result) ->
+        stat.findItems '', (error, result) ->
           should.exist error
           error.message.should.eql 'Pass a valid item name!'
           should.not.exist result
@@ -90,7 +105,7 @@ describe 'EvEStatic', ->
       stat.init (error) ->
         should.not.exist error
         (->
-          stat.findOne 'Tyrfing'
+          stat.findItems 'Tyrfing'
         ).should.throw 'Must be called with a callback!'
         done()
 
@@ -99,7 +114,31 @@ describe 'EvEStatic', ->
       stat.init (error) ->
         should.not.exist error
 
-        stat.find ['Tyrfing', 'Erebus', 'Quad 3500mm Gallium Cannon'], (error, result) ->
+        stat.findItems ['Tyrfing', 'Erebus', 'Quad 3500mm Gallium Cannon'], (error, result) ->
+          should.not.exist error
+          should.exist result
+
+          result.should.be.instanceOf Array
+          result[0].typeName.should.eql 'Erebus'
+          result[0].typeID.should.eql 671
+          should.not.exist result[0].effectID
+
+          result[1].typeName.should.eql 'Quad 3500mm Gallium Cannon'
+          result[1].typeID.should.eql 3571
+          result[1].effectID.should.eql 12
+
+          result[2].typeName.should.eql 'Tyrfing'
+          result[2].typeID.should.eql 32342
+          should.not.exist result[2].effectID
+
+          done()
+
+    it 'should also work with item IDs', (done) ->
+      stat = new EvEStatic
+      stat.init (error) ->
+        should.not.exist error
+
+        stat.findItems ['32342', '671', '3571'], (error, result) ->
           should.not.exist error
           should.exist result
 

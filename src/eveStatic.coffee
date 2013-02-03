@@ -35,9 +35,9 @@ exports.EvEStatic = class EveStatic
         callback()
 
   ###
-  Looks up an array of names and returns an object with name : id : slot (if applicable)
+  Looks up an array of names or ids and returns an object with name : id : slot (if applicable)
   ###
-  find: (nameArr, callback) ->
+  findItems: (nameArr, callback) ->
     if not callback?
       throw new Error 'Must be called with a callback!'
 
@@ -53,17 +53,30 @@ exports.EvEStatic = class EveStatic
     inStr += '?,' for num in [0 ... nameArr.length]
     inStr = inStr.slice 0, -1
 
-    @db.all "SELECT i.typeName, i.typeID, e.effectID FROM invTypes as i LEFT JOIN dgmTypeEffects e ON i.typeID = e.typeID AND e.effectID IN (11,12,13,2663) WHERE i.typeName IN (#{inStr})", nameArr, (err, rows) ->
-      if err
-        callback err, null
-        return
+    if _.isNaN(parseInt nameArr[0])
 
-      callback null, rows
+      @db.all "SELECT i.typeName, i.typeID, e.effectID FROM invTypes as i LEFT JOIN dgmTypeEffects e ON i.typeID = e.typeID AND e.effectID IN (11,12,13,2663) WHERE i.typeName IN (#{inStr})", nameArr, (err, rows) ->
+        if err
+          callback err, null
+          return
+
+        callback null, rows
+
+    else
+
+      @db.all "SELECT i.typeName, i.typeID, e.effectID FROM invTypes as i LEFT JOIN dgmTypeEffects e ON i.typeID = e.typeID AND e.effectID IN (11,12,13,2663) WHERE i.typeID IN (#{inStr})", nameArr, (err, rows) ->
+        if err
+          callback err, null
+          return
+
+        callback null, rows
+      
+      
 
   ###
   Looks for the supplied name in the db and returns the typeID
   ###
-  findOne: (name, callback) ->
+  findItem: (name, callback) ->
     if not callback?
       throw new Error 'Must be called with a callback!'
 
@@ -75,9 +88,20 @@ exports.EvEStatic = class EveStatic
       callback new Error 'Must call init() first!', null
       return
 
-    @db.get "SELECT i.typeName, i.typeID , e.effectID FROM invTypes as i LEFT JOIN dgmTypeEffects as e ON i.typeID = e.typeID AND e.effectID IN (11,12,13,2663) WHERE typeName = '#{name}'", (err, row) ->
-      if err
-        callback err, null
-        return
+    if _.isNaN(parseInt name)
 
-      callback null, row
+      @db.get "SELECT i.typeName, i.typeID , e.effectID FROM invTypes as i LEFT JOIN dgmTypeEffects as e ON i.typeID = e.typeID AND e.effectID IN (11,12,13,2663) WHERE i.typeName = '#{name}'", (err, row) ->
+        if err
+          callback err, null
+          return
+
+        callback null, row
+
+    else
+
+      @db.get "SELECT i.typeName, i.typeID, e.effectID FROM invTypes as i LEFT JOIN dgmTypeEffects as e ON i.typeID = e.typeID AND e.effectID IN (11,12,13,2663) WHERE i.typeID = '#{name}'", (err, row) ->
+        if err
+          callback err, null
+          return
+
+        callback null, row
